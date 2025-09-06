@@ -1,0 +1,13 @@
+{
+  "name": "britian-english-center",
+  "version": "1.0.0",
+  "description": "Britian English Speaking Center Website",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
+  },
+  "keywords": ["english", "education", "language", "learning"],
+  "author": "Anas Ansari",
+  "license": "MIT"
+}

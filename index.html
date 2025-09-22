@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Britian - English Speaking Center</title>
+    <title>Britan - English Speaking Center</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -11,211 +11,791 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --accent-red: #dc2626;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 50%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
         .hover-scale {
             transition: transform 0.3s ease;
         }
         .hover-scale:hover {
-            transform: scale(1.03);
+            transform: translateY(-2px);
         }
+        
         .text-shadow {
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .glow-text {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .professional-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .professional-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .gradient-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .gradient-button:hover {
+            background: linear-gradient(135deg, #1e3a8a, var(--primary-blue));
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+            margin: 3rem 0;
+        }
+        
+        /* Professional Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Removed problematic animations */
+        
+        /* Removed gradient border animation */
+        
+        .text-reveal {
+            overflow: hidden;
+        }
+        
+        .text-reveal span {
+            display: inline-block;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .text-reveal.visible span {
+            transform: translateY(0);
+        }
+        
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            transform: scaleX(0);
+            transform-origin: left;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Loading states */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Mobile Navigation */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .mobile-menu.active {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid #e5e7eb;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                z-index: 50;
+            }
+            
+            /* Ensure mobile menu button is clickable */
+            #mobile-menu-button {
+                z-index: 60;
+                position: relative;
+            }
+            
+            /* Fix mobile menu positioning */
+            nav {
+                position: relative;
+                z-index: 40;
+            }
+            
+            /* Ensure mobile menu is visible when active */
+            .mobile-menu.active {
+                display: block !important;
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Mobile menu button styling */
+            #mobile-menu-button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #mobile-menu-button:hover {
+                background-color: #f3f4f6;
+                border-radius: 4px;
+            }
+        }
+        
+        /* Mobile Responsive Improvements */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            .section-padding {
+                padding: 2rem 0;
+            }
+            .card-padding {
+                padding: 1rem;
+            }
+            .teacher-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .course-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .container-fix {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+        
+        /* Fix width consistency issues */
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+        .container-fix {
+            max-width: 100%;
+            margin: 0 auto;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .container-fix {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .container-fix {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+        /* Ensure all sections take full width */
+        section {
+            width: 100%;
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.75rem;
+                line-height: 1.1;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .teacher-grid {
+                grid-template-columns: 1fr;
+            }
+            .container-fix {
+                padding-left: 0.25rem;
+                padding-right: 0.25rem;
+            }
+            .section-padding {
+                padding: 1.5rem 0;
+            }
+            .text-2xl {
+                font-size: 1.5rem;
+            }
+            .text-3xl {
+                font-size: 1.75rem;
+            }
+        }
+        
+        /* Professional Enhancements */
+        .professional-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .professional-border {
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Mobile-specific fixes */
+        @media (max-width: 768px) {
+            .flex-col {
+                flex-direction: column;
+            }
+            .space-y-3 > * + * {
+                margin-top: 0.75rem;
+            }
+            .space-x-4 > * + * {
+                margin-left: 0;
+            }
+            .md\:flex {
+                display: flex;
+            }
+            .md\:w-1\/2 {
+                width: 100%;
+            }
+            .md\:mb-0 {
+                margin-bottom: 1rem;
+            }
+            .md\:mt-0 {
+                margin-top: 1rem;
+            }
+            
+            /* Fix hero section mobile layout */
+            .hero-section-mobile {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-content-mobile {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            .hero-image-mobile {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            /* Ensure full width usage */
+            .container-fix {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                max-width: 100vw;
+                width: 100%;
+            }
+            
+            /* Force full width on mobile */
+            .hero-gradient {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                right: 50%;
+                margin-left: -50vw;
+                margin-right: -50vw;
+            }
+            
+            /* Ensure hero section container uses full width */
+            .hero-gradient .container-fix {
+                width: 100vw;
+                max-width: 100vw;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Ensure content fills available space */
+            .hero-content-mobile h1,
+            .hero-content-mobile p {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            /* Fix button container width */
+            .hero-content-mobile .flex {
+                width: 100%;
+            }
+            
+            /* Ensure image takes full width on mobile */
+            .hero-image-mobile img {
+                width: 100%;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body class="font-sans antialiased text-gray-800">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scroll-indicator"></div>
+    
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 relative border-b border-gray-100">
+        <div class="container-fix max-w-7xl mx-auto">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <!-- <i data-feather="book-open" class="h-8 w-8 text-blue-600"></i> -->
-                     <img src="heart1.jpg"  alt="" class="w-15 h-12 pt-1">
-                    <span class="ml-2 text-2xl font-bold text-blue-600">Britian</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#" class="text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                        <a href="#courses" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Courses</a>
-                        <a href="#teachers" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Teachers</a>
-                        <a href="#testimonials" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Testimonials</a>
-                        <a href="#contact" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                <div class="flex-shrink-0 flex items-center group">
+                    <div class="relative">
+                        <img src="pic/heart1.jpg" alt="Britian Logo" class="w-12 h-12 object-contain group-hover:scale-110 transition-transform duration-300">
+                        <!-- <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div> -->
+                    </div>
+                    <div class="ml-3">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">BRITAN</span>
+                        <div class="text-xs text-gray-500 -mt-1">English Center</div>
                     </div>
                 </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-1">
+                        <a href="#" class="text-blue-600 bg-blue-50 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300">Home</a>
+                        <a href="#courses" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">Courses</a>
+                        <a href="#teachers" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">Teachers</a>
+                        <a href="#testimonials" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">Testimonials</a>
+                        <a href="#contact" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="tel:+919368330050" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                        <i data-feather="phone" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://wa.me/919368330050" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center">
+                        <i data-feather="message-circle" class="w-4 h-4 mr-2"></i>
+                        WhatsApp
+                    </a>
+                </div>
                 <div class="md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 focus:outline-none">
-                        <i data-feather="menu"></i>
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-3 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 focus:outline-none transition-all duration-300">
+                        <i data-feather="menu" id="menu-icon" class="w-6 h-6"></i>
                     </button>
+                </div>
+            </div>
+            <!-- Mobile menu -->
+            <div class="mobile-menu md:hidden" id="mobile-menu">
+                <div class="px-4 pt-4 pb-6 space-y-2 bg-white border-t border-gray-100">
+                    <a href="#" class="text-blue-600 bg-blue-50 block px-4 py-3 rounded-lg text-base font-semibold">Home</a>
+                    <a href="#courses" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300">Courses</a>
+                    <a href="#teachers" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300">Teachers</a>
+                    <a href="#testimonials" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300">Testimonials</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300">Contact</a>
+                    <div class="pt-4 border-t border-gray-100">
+                        <a href="https://wa.me/919368330050" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 flex items-center justify-center">
+                            <i data-feather="message-circle" class="w-5 h-5 mr-2"></i>
+                            WhatsApp Us
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white py-20 md:py-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="md:flex items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
-<h1 class="text-4xl md:text-5xl font-bold mb-6">
-  Master English with 
-  <span class="text-red-600 glow-text">
-    Mr Ikhwan Sir
-  </span> 
-  at Britian
-</h1>
-
-<style>
-.glow-text {
-  text-shadow: 0 0 10px rgba(220, 38, 38, 0.8), 
-               0 0 20px rgba(220, 38, 38, 0.6), 
-}
-</style>
-                    <p class="text-xl mb-8 opacity-90">Unlock your potential with our immersive English courses taught by certified native speakers.</p>
-                    <div class="flex space-x-4">
-                        <a href="#courses" class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium transition duration-300 hover-scale">Explore Courses</a>
-                        <a href="#contact" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-medium transition duration-300 hover-scale">Contact Us</a>
+    <section class="hero-gradient text-white py-20 md:py-32 section-padding relative">
+        <div class="container-fix max-w-7xl mx-auto relative z-10">
+            <div class="hero-section-mobile md:flex items-center min-h-[70vh]">
+                <div class="hero-content-mobile md:w-1/2 mb-10 md:mb-0">
+                    <div class="mb-6">
+                        <span class="inline-block bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+                            🎯 Trusted by 500+ Students
+                        </span>
+                    </div>
+                    <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Master English with 
+                        <span class="glow-text block">
+                            Mr Ikhwan Sir
+                        </span> 
+                        at Britan
+                    </h1>
+                    <p class="hero-subtitle text-xl md:text-2xl mb-8 opacity-95 leading-relaxed max-w-2xl">
+                        Transform your English skills with our immersive courses taught by certified native speakers. 
+                        <span class="font-semibold">95% success rate</span> in IELTS/TOEFL preparation.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mb-8">
+                        <a href="#courses" class="gradient-button text-center px-8 py-4 text-lg font-semibold">
+                            Explore Courses
+                        </a>
+                        <a href="#contact" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300 hover-scale text-center">
+                            Get Free Consultation
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm">
+                        <div class="flex items-center">
+                            <i data-feather="check-circle" class="w-5 h-5 text-green-400 mr-2"></i>
+                            <span>Free Placement Test</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="users" class="w-5 h-5 text-blue-400 mr-2"></i>
+                            <span>Small Classes (Max 8)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="award" class="w-5 h-5 text-yellow-400 mr-2"></i>
+                            <span>Certified Teachers</span>
+                        </div>
                     </div>
                 </div>
-                <div class="md:w-1/2" data-aos="fade-left">
-                    <img src="http://static.photos/education/1200x630/42" alt="Students learning English" class="rounded-xl shadow-2xl hover-scale">
+                <div class="hero-image-mobile md:w-1/2 mt-8 md:mt-0">
+                    <div class="relative">
+                        <img src="http://static.photos/education/1200x630/42" alt="Students learning English" class="rounded-2xl shadow-2xl hover-scale w-full">
+                        <div class="absolute -bottom-6 -left-6 bg-white text-gray-800 p-4 rounded-xl shadow-lg">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                    <i data-feather="star" class="w-6 h-6 text-green-600"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-lg">4.9/5</div>
+                                    <div class="text-sm text-gray-600">Student Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose Britian?</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Our unique approach combines modern teaching methods with cultural immersion for rapid language acquisition.</p>
+    <section class="py-16 bg-gray-50 section-padding">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="text-center mb-12 md:mb-16" >
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 gradient-text">Why Choose Britan?</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">Our unique approach combines modern teaching methods with cultural immersion for rapid language acquisition.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="100">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i data-feather="users" class="h-8 w-8 text-blue-600"></i>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <div class="bg-blue-100 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                        <i data-feather="users" class="h-6 w-6 md:h-8 md:w-8 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Small Class Sizes</h3>
-                    <p class="text-gray-600">Maximum 8 students per class for personalized attention and more speaking opportunities.</p>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-gray-900">Small Class Sizes</h3>
+                    <p class="text-gray-600 text-sm md:text-base">Maximum 8 students per class for personalized attention and more speaking opportunities.</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="200">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i data-feather="globe" class="h-8 w-8 text-blue-600"></i>
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <div class="bg-blue-100 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                        <i data-feather="globe" class="h-6 w-6 md:h-8 md:w-8 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Native Speakers</h3>
-                    <p class="text-gray-600">Learn from certified teachers with authentic accents and deep cultural knowledge.</p>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-gray-900">Native Speakers</h3>
+                    <p class="text-gray-600 text-sm md:text-base">Learn from certified teachers with authentic accents and deep cultural knowledge.</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="300">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i data-feather="award" class="h-8 w-8 text-blue-600"></i>
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <div class="bg-blue-100 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                        <i data-feather="award" class="h-6 w-6 md:h-8 md:w-8 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Proven Results</h3>
-                    <p class="text-gray-600">95% of our students achieve their target IELTS/TOEFL scores within 3 months.</p>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-gray-900">Proven Results</h3>
+                    <p class="text-gray-600 text-sm md:text-base">95% of our students achieve their target IELTS/TOEFL scores within 3 months.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Courses Section -->
-    <section id="courses" class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Courses</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Comprehensive programs designed for all proficiency levels and learning goals.</p>
+    <section id="courses" class="py-20 section-padding bg-gradient-to-b from-white to-gray-50">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="text-center mb-16" >
+                <div class="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                    📚 Our Courses
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 gradient-text">Comprehensive English Programs</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Designed for all proficiency levels with proven methodologies and personalized learning paths.
+                </p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="100">
-                    <img src="http://static.photos/workspace/640x360/10" alt="General English" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full">Beginner</span>
-                            <span class="ml-2 text-gray-500 text-sm">8 weeks</span>
+            <div class="course-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="professional-card group"  >
+                    <div class="relative overflow-hidden">
+                        <img src="http://static.photos/workspace/640x360/10" alt="General English" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">General English</h3>
-                        <p class="text-gray-600 mb-4">Build a strong foundation in grammar, vocabulary, and conversational skills.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-600">₹2999</span>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Learn more →</a>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full">Beginner</span>
+                                <span class="text-gray-500 text-sm">8 weeks</span>
+                            </div>
+                            <div class="flex items-center text-yellow-500">
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <span class="ml-1 text-sm font-medium">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">General English</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Build a strong foundation in grammar, vocabulary, and conversational skills with interactive learning methods.</p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Grammar & Vocabulary</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Speaking Practice</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Certificate Included</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-blue-600">₹2,999</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹3,999</span>
+                            </div>
+                            <a href="#contact" class="gradient-button text-sm px-4 py-2">Enroll Now</a>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="200">
-                    <img src="http://static.photos/office/640x360/15" alt="Business English" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full">Intermediate</span>
-                            <span class="ml-2 text-gray-500 text-sm">6 weeks</span>
+                
+                <div class="professional-card group"  >
+                    <div class="relative overflow-hidden">
+                        <img src="http://static.photos/office/640x360/15" alt="Business English" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">Professional</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Business English</h3>
-                        <p class="text-gray-600 mb-4">Master professional communication, presentations, and business writing.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-600">₹4999</span>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Learn more →</a>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-purple-100 text-purple-600 text-xs font-semibold px-3 py-1 rounded-full">Intermediate</span>
+                                <span class="text-gray-500 text-sm">6 weeks</span>
+                            </div>
+                            <div class="flex items-center text-yellow-500">
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <span class="ml-1 text-sm font-medium">4.8</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition-colors">Business English</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Master professional communication, presentations, and business writing for career advancement.</p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Professional Writing</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Presentation Skills</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Interview Preparation</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-purple-600">₹4,999</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹6,999</span>
+                            </div>
+                            <a href="#contact" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300">Enroll Now</a>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="300">
-                    <img src="http://static.photos/education/640x360/20" alt="IELTS Preparation" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full">Advanced</span>
-                            <span class="ml-2 text-gray-500 text-sm">4 weeks</span>
+                
+                <div class="professional-card group"  >
+                    <div class="relative overflow-hidden">
+                        <img src="http://static.photos/education/640x360/20" alt="IELTS Preparation" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Intensive</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">IELTS Preparation</h3>
-                        <p class="text-gray-600 mb-4">Intensive training to achieve your target band score with proven strategies.</p>
-                        <div class="flex justify-between items-center">
-<span class="font-bold text-blue-600">₹5499</span>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Learn more →</a>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-red-100 text-red-600 text-xs font-semibold px-3 py-1 rounded-full">Advanced</span>
+                                <span class="text-gray-500 text-sm">4 weeks</span>
+                            </div>
+                            <div class="flex items-center text-yellow-500">
+                                <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                <span class="ml-1 text-sm font-medium">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-red-600 transition-colors">IELTS Preparation</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Intensive training to achieve your target band score with proven strategies and mock tests.</p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>Mock Tests & Analysis</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>All 4 Skills Training</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span>95% Success Rate</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-red-600">₹5,499</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">₹7,999</span>
+                            </div>
+                            <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300">Enroll Now</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-12" data-aos="fade-up">
-                <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 hover-scale">View All Courses</a>
+            
+            <!-- Additional Course Info -->
+            <div class="mt-16 text-center" >
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Why Choose Our Courses?</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Small Class Sizes</h4>
+                            <p class="text-gray-600 text-sm">Maximum 8 students for personalized attention</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-feather="award" class="w-8 h-8 text-green-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Certified Teachers</h4>
+                            <p class="text-gray-600 text-sm">Native speakers with teaching certifications</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-feather="trending-up" class="w-8 h-8 text-purple-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Proven Results</h4>
+                            <p class="text-gray-600 text-sm">95% success rate in achieving target scores</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Teachers Section -->
-    <section id="teachers" class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Meet Our Teachers</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Our certified instructors bring years of experience and passion for teaching.</p>
+    <section id="teachers" class="py-16 bg-gray-50 section-padding">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="text-center mb-12 md:mb-16" >
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 gradient-text">Meet Our Teachers</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">Our certified instructors bring years of experience and passion for teaching.</p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="100">
-                    <img src="sir.png" alt="Mr. Ikhwan Sir" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">Mr.Ikhwan Sir</h3>
-                        <p class="text-blue-600 mb-3">Founder / English Specialist</p>
-                        <p class="text-gray-600 text-sm">20+ years teaching experience with Cambridge certification.</p>
+            <div class="teacher-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="bg-white rounded-xl overflow-hidden professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <img src="pic/sir.png" alt="Mr. Ikhwan Sir" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-900">Mr.Ikhwan Sir</h3>
+                        <p class="text-blue-600 mb-3 text-sm md:text-base">Founder / English Specialist</p>
+                        <p class="text-gray-600 text-xs md:text-sm">20+ years teaching experience with Cambridge certification.</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="200">
-                    <img src="http://static.photos/people/640x360/2" alt="Michael Brown" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">Mrs Khushi Mam</h3>
-                        <p class="text-blue-600 mb-3">English Coach</p>
-                        <p class="text-gray-600 text-sm">Former corporate trainer</p>
+                <div class="bg-white rounded-xl overflow-hidden professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <img src="http://static.photos/people/640x360/2" alt="Mrs Khushi Mam" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-900">Mrs Khushi Mam</h3>
+                        <p class="text-blue-600 mb-3 text-sm md:text-base">English Coach</p>
+                        <p class="text-gray-600 text-xs md:text-sm">Former corporate trainer</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="300">
-                    <img src="http://static.photos/people/640x360/3" alt="Emily Wilson" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">Emily Wilson</h3>
-                        <p class="text-blue-600 mb-3">IELTS/TOEFL Expert</p>
-                        <p class="text-gray-600 text-sm">Specializes in test preparation with 98% student success rate.</p>
+                <div class="bg-white rounded-xl overflow-hidden professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <img src="http://static.photos/people/640x360/3" alt="Emily Wilson" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-900">Emily Wilson</h3>
+                        <p class="text-blue-600 mb-3 text-sm md:text-base">IELTS/TOEFL Expert</p>
+                        <p class="text-gray-600 text-xs md:text-sm">Specializes in test preparation with 98% student success rate.</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="400">
-                    <img src="http://static.photos/people/640x360/4" alt="David Thompson" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">David Thompson</h3>
-                        <p class="text-blue-600 mb-3">Pronunciation Coach</p>
-                        <p class="text-gray-600 text-sm">Phonetics specialist with theater background for perfect accent.</p>
+                <div class="bg-white rounded-xl overflow-hidden professional-shadow hover:shadow-lg transition duration-300 hover-scale professional-border"  >
+                    <img src="http://static.photos/people/640x360/4" alt="David Thompson" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-6">
+                        <h3 class="text-lg md:text-xl font-bold mb-1 text-gray-900">David Thompson</h3>
+                        <p class="text-blue-600 mb-3 text-sm md:text-base">Pronunciation Coach</p>
+                        <p class="text-gray-600 text-xs md:text-sm">Phonetics specialist with theater background for perfect accent.</p>
                     </div>
                 </div>
             </div>
@@ -223,18 +803,18 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Student Success Stories</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Don't just take our word for it - hear from our students.</p>
+    <section id="testimonials" class="py-16 section-padding">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="text-center mb-12 md:mb-16" >
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 gradient-text">Student Success Stories</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">Don't just take our word for it - hear from our students.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="100">
+            <div class="testimonial-grid grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow professional-border"  >
                     <div class="flex items-center mb-4">
                         <img src="http://static.photos/people/200x200/5" alt="Anna K." class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Anna K.</h4>
+                            <h4 class="font-bold text-gray-900">Anna K.</h4>
                             <div class="flex text-yellow-400">
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
@@ -244,13 +824,13 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"After just 2 months at Britian, I got promoted at work thanks to my improved English. The business course was exactly what I needed!"</p>
+                    <p class="text-gray-600 italic text-sm md:text-base">"After just 2 months at Britan, I got promoted at work thanks to my improved English. The business course was exactly what I needed!"</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow professional-border"  >
                     <div class="flex items-center mb-4">
                         <img src="http://static.photos/people/200x200/6" alt="Mohammed A." class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Mohammed A.</h4>
+                            <h4 class="font-bold text-gray-900">Mohammed A.</h4>
                             <div class="flex text-yellow-400">
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
@@ -260,13 +840,13 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"I achieved IELTS 7.5 thanks to Emily's strategies. The mock tests and personalized feedback made all the difference."</p>
+                    <p class="text-gray-600 italic text-sm md:text-base">"I achieved IELTS 7.5 thanks to Emily's strategies. The mock tests and personalized feedback made all the difference."</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-white p-6 md:p-8 rounded-xl professional-shadow professional-border"  >
                     <div class="flex items-center mb-4">
                         <img src="http://static.photos/people/200x200/7" alt="Carlos M." class="w-12 h-12 rounded-full object-cover">
                         <div class="ml-4">
-                            <h4 class="font-bold">Carlos M.</h4>
+                            <h4 class="font-bold text-gray-900">Carlos M.</h4>
                             <div class="flex text-yellow-400">
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
                                 <i data-feather="star" class="w-4 h-4 fill-current"></i>
@@ -276,177 +856,518 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 italic">"David's pronunciation classes transformed my speaking. People now think I've lived abroad for years!"</p>
+                    <p class="text-gray-600 italic text-sm md:text-base">"David's pronunciation classes transformed my speaking. People now think I've lived abroad for years!"</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 bg-blue-600 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">Ready to Transform Your English?</h2>
-            <p class="text-xl mb-8 max-w-3xl mx-auto opacity-90" data-aos="fade-up" data-aos-delay="100">Join hundreds of successful students who achieved their language goals with Britian.</p>
-            <a href="#contact" class="inline-block bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition duration-300 hover-scale" data-aos="fade-up" data-aos-delay="200">Start Your Journey Today</a>
+    <section class="py-16 bg-blue-600 text-white section-padding">
+        <div class="container-fix max-w-7xl mx-auto text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6" >Ready to Transform Your English?</h2>
+            <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto opacity-90"  >Join hundreds of successful students who achieved their language goals with Britan.</p>
+            <a href="#contact" class="inline-block bg-white text-blue-600 hover:bg-gray-100 px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold text-base md:text-lg transition duration-300 hover-scale"  >Start Your Journey Today</a>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div data-aos="fade-right">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Get In Touch</h2>
-                    <p class="text-gray-600 mb-8">Have questions about our courses or want to schedule a placement test? Contact us today.</p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full">
-                                <i data-feather="map-pin" class="h-6 w-6 text-blue-600"></i>
+    <section id="contact" class="py-20 section-padding bg-gradient-to-b from-gray-50 to-white">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="text-center mb-16" >
+                <div class="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                    📞 Contact Us
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 gradient-text">Get In Touch Today</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Ready to start your English learning journey? We're here to help you choose the perfect course and answer all your questions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Contact Information -->
+                <div >
+                    <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start group">
+                                <div class="bg-blue-100 p-4 rounded-xl flex-shrink-0 group-hover:bg-blue-200 transition-colors duration-300">
+                                    <i data-feather="map-pin" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold text-gray-900 text-lg mb-1">Our Location</h4>
+                                    <p class="text-gray-600">Shamli Road, Muzaffarnagar, UP</p>
+                                    <p class="text-sm text-gray-500 mt-1">Near City Center, Easy to Find</p>
+                                </div>
                             </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">Our Location</h4>
-                                <p class="text-gray-600"> Shamli Road, Muzaffarnagar, UP</p>
+                            
+                            <div class="flex items-start group">
+                                <div class="bg-green-100 p-4 rounded-xl flex-shrink-0 group-hover:bg-green-200 transition-colors duration-300">
+                                    <i data-feather="phone" class="h-6 w-6 text-green-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold text-gray-900 text-lg mb-1">Phone Number</h4>
+                                    <p class="text-gray-600 text-lg font-semibold">+91 9368330050</p>
+                                    <p class="text-sm text-gray-500 mt-1">Available 9 AM - 8 PM</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start group">
+                                <div class="bg-purple-100 p-4 rounded-xl flex-shrink-0 group-hover:bg-purple-200 transition-colors duration-300">
+                                    <i data-feather="mail" class="h-6 w-6 text-purple-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold text-gray-900 text-lg mb-1">Email Address</h4>
+                                    <p class="text-gray-600">info@britan-center.com</p>
+                                    <p class="text-sm text-gray-500 mt-1">We respond within 24 hours</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full">
-                                <i data-feather="mail" class="h-6 w-6 text-blue-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">Email Us</h4>
-                                <p class="text-gray-600">info@britian-center.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full">
-                                <i data-feather="phone" class="h-6 w-6 text-blue-600"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">Call Us</h4>
-                                <p class="text-gray-600">+91 9368330050</p>
+                        
+                        <!-- Quick Contact Buttons -->
+                        <div class="mt-8 pt-6 border-t border-gray-100">
+                            <h4 class="font-semibold text-gray-900 mb-4">Quick Contact</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <a href="tel:+919368330050" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-center font-semibold transition-all duration-300 flex items-center justify-center">
+                                    <i data-feather="phone" class="w-4 h-4 mr-2"></i>
+                                    Call Now
+                                </a>
+                                <a href="https://wa.me/919368330050" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg text-center font-semibold transition-all duration-300 flex items-center justify-center">
+                                    <i data-feather="message-circle" class="w-4 h-4 mr-2"></i>
+                                    WhatsApp
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-             <div data-aos="fade-left">
-    <div class="bg-white p-8 rounded-xl shadow-lg">
-        <h3 class="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h3>
-        
-        <!-- ✅ Updated Form with Formspree -->
-        <form action="https://formspree.io/f/xqakgnka" method="POST">
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
-                <input type="text" id="name" name="name" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                
+                <!-- Contact Form & Social Media -->
+                <div >
+                    <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+                        <form class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Your first name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Your last name">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="your.email@example.com">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="+91 9876543210">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Course Interest</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                    <option>Select a course</option>
+                                    <option>General English</option>
+                                    <option>Business English</option>
+                                    <option>IELTS Preparation</option>
+                                    <option>TOEFL Preparation</option>
+                                    <option>Not sure yet</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                                <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Tell us about your English learning goals..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full gradient-button py-4 text-lg font-semibold">
+                                Send Message
+                            </button>
+                        </form>
+                        
+                        <!-- Social Media Links -->
+                        <div class="mt-8 pt-6 border-t border-gray-100">
+                            <h4 class="font-semibold text-gray-900 mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://instagram.com/britan_english_institute/" target="_blank" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-3 rounded-lg transition-all duration-300">
+                                    <i data-feather="instagram" class="w-5 h-5"></i>
+                                </a>
+                                <a href="https://wa.me/919368330050" target="_blank" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg transition-all duration-300">
+                                    <i data-feather="message-circle" class="w-5 h-5"></i>
+                                </a>
+                                <a href="tel:+919368330050" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-all duration-300">
+                                    <i data-feather="phone" class="w-5 h-5"></i>
+                                </a>
+                                <a href="mailto:info@britian-center.com" class="bg-gray-600 hover:bg-gray-700 text-white p-3 rounded-lg transition-all duration-300">
+                                    <i data-feather="mail" class="w-5 h-5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
-                <input type="email" id="email" name="email" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="course" class="block text-gray-700 font-medium mb-2">Course Interest</label>
-                <select id="course" name="course"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Select a course</option>
-                    <option value="general">General English</option>
-                    <option value="business">Business English</option>
-                    <option value="ielts">IELTS Preparation</option>
-                    <option value="toefl">TOEFL Preparation</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="mb-6">
-                <label for="message" class="block text-gray-700 font-medium mb-2">Your Message</label>
-                <textarea id="message" name="message" rows="4" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-            </div>
-
-            <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
-                Send Message
-            </button>
-        </form>
-    </div>
-</div>
-
+            
+            <!-- Additional Info -->
+            <div class="mt-16" >
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 text-white text-center">
+                    <h3 class="text-2xl font-bold mb-4">Ready to Start Your English Journey?</h3>
+                    <p class="text-lg mb-6 opacity-90">Join hundreds of successful students who achieved their language goals with Britan.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="https://wa.me/919368330050" target="_blank" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300">
+                            Get Free Consultation
+                        </a>
+                        <a href="tel:+919368330050" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300">
+                            Call Now
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <i data-feather="book-open" class="h-8 w-8 text-blue-400"></i>
-                        <span class="ml-2 text-2xl font-bold text-white">Britian</span>
+    <footer class="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-16">
+        <div class="container-fix max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                <!-- Company Info -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center mb-6">
+                        <div class="relative">
+                            <img src="pic/heart1.jpg" alt="Britian Logo" class="w-12 h-12 object-contain">
+                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-900"></div>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">BRITAN</span>
+                            <div class="text-xs text-gray-400 -mt-1">English Center</div>
+                        </div>
                     </div>
-                    <p class="text-gray-400">Your pathway to English fluency with expert guidance and immersive learning.</p>
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
+                        Your pathway to English fluency with expert guidance, immersive learning, and proven results. 
+                        Join 500+ successful students who achieved their language goals.
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-400">500+</div>
+                            <div class="text-xs text-gray-400">Students</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-400">95%</div>
+                            <div class="text-xs text-gray-400">Success Rate</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-yellow-400">4.9</div>
+                            <div class="text-xs text-gray-400">Rating</div>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Quick Links -->
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#courses" class="text-gray-400 hover:text-white transition">Courses</a></li>
-                        <li><a href="#teachers" class="text-gray-400 hover:text-white transition">Teachers</a></li>
-                        <li><a href="#testimonials" class="text-gray-400 hover:text-white transition">Testimonials</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    <h3 class="text-lg font-bold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="home" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Home
+                        </a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-blue-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="book" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Courses
+                        </a></li>
+                        <li><a href="#teachers" class="text-gray-400 hover:text-blue-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="users" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Teachers
+                        </a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-blue-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="star" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Testimonials
+                        </a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-blue-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="phone" class="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            Contact
+                        </a></li>
                     </ul>
                 </div>
+                
+                <!-- Courses -->
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Courses</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">General English</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Business English</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">IELTS Preparation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">TOEFL Preparation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pronunciation</a></li>
+                    <h3 class="text-lg font-bold mb-6 text-white">Our Courses</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#courses" class="text-gray-400 hover:text-green-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="check-circle" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                            General English
+                        </a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-green-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="check-circle" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                            Business English
+                        </a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-green-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="check-circle" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                            IELTS Preparation
+                        </a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-green-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="check-circle" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                            TOEFL Preparation
+                        </a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-green-400 transition-colors duration-300 text-sm md:text-base flex items-center group">
+                            <i data-feather="check-circle" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                            Pronunciation
+                        </a></li>
                     </ul>
                 </div>
+                
+                <!-- Contact & Social -->
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
-                    <div class="flex space-x-4 mb-6">
-                        <a href="#" class="bg-gray-800 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition">
-                            <i data-feather="facebook" class="w-5 h-5"></i>
+                    <h3 class="text-lg font-bold mb-6 text-white">Connect With Us</h3>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
+                            <i data-feather="map-pin" class="w-4 h-4 mr-3 text-blue-400"></i>
+                            <span class="text-sm">Shamli Road, Muzaffarnagar, UP</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
+                            <i data-feather="phone" class="w-4 h-4 mr-3 text-green-400"></i>
+                            <span class="text-sm">+91 9368330050</span>
+                        </div>
+                        <div class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
+                            <i data-feather="mail" class="w-4 h-4 mr-3 text-purple-400"></i>
+                            <span class="text-sm">info@britan-center.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3 mb-6">
+                        <a href="https://wa.me/919368330050" target="_blank" class="bg-gray-700 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group">
+                            <i data-feather="message-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
                         </a>
-                        <a href="#" class="bg-gray-800 hover:bg-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition">
-                            <i data-feather="twitter" class="w-5 h-5"></i>
+                        <a href="https://instagram.com/britan_english_institute/" target="_blank" class="bg-gray-700 hover:bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group">
+                            <i data-feather="instagram" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
                         </a>
-                        <a href="#" class="bg-gray-800 hover:bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center transition">
-                            <i data-feather="instagram" class="w-5 h-5"></i>
+                        <a href="tel:+919368330050" class="bg-gray-700 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group">
+                            <i data-feather="phone" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
                         </a>
-                        <a href="#" class="bg-gray-800 hover:bg-red-600 w-10 h-10 rounded-full flex items-center justify-center transition">
-                            <i data-feather="youtube" class="w-5 h-5"></i>
+                        <a href="mailto:info@britian-center.com" class="bg-gray-700 hover:bg-gray-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group">
+                            <i data-feather="mail" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
                         </a>
                     </div>
-                    <p class="text-gray-400">Subscribe to our newsletter</p>
-                    <div class="mt-3 flex">
-                        <input type="email" placeholder="Your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                        <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg">
-                            <i data-feather="send" class="w-5 h-5"></i>
-                        </button>
+                    
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <h4 class="text-sm font-semibold text-white mb-2">Newsletter</h4>
+                        <p class="text-xs text-gray-400 mb-3">Get updates on new courses and tips</p>
+                        <div class="flex">
+                            <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-3 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-xs">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-r-lg transition-colors duration-300">
+                                <i data-feather="send" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">© 2025 <a href="www.linkedin.com/in/anas-ansari-45147b27a" style="color: yellow;">Anas Ansari</a>. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-700 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <p class="text-gray-400 text-sm">
+                            © 2025 Britan English Center. All rights reserved. | 
+                            Designed & Developed by 
+                            <a href="https://www.linkedin.com/in/anas-ansari-45147b27a/" 
+                               class="text-yellow-400 hover:text-yellow-300 transition-colors duration-300 font-semibold">
+                                Anas Ansari
+                            </a>
+                        </p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Privacy Policy</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Terms of Service</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Refund Policy</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // Initialize AOS with minimal settings
         AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
+            duration: 600,
+            easing: 'ease',
+            once: true,
+            offset: 50,
+            delay: 0
         });
+        
+        // Initialize Feather icons
         feather.replace();
+        
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.getElementById('scroll-indicator').style.transform = `scaleX(${scrollPercent / 100})`;
+        }
+        
+        // Smooth scroll for navigation links
+        function smoothScrollTo(target) {
+            const element = document.querySelector(target);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+        
+        // Simplified scroll animations
+        function initScrollAnimations() {
+            // Removed complex scroll animations for better performance
+        }
+        
+        // Removed parallax effect for better performance
+        
+        // Enhanced mobile menu with better animations
+        function initMobileMenu() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            
+            if (mobileMenuButton && mobileMenu && menuIcon) {
+                let isMenuOpen = false;
+                
+                function toggleMenu() {
+                    isMenuOpen = !isMenuOpen;
+                    
+                    if (isMenuOpen) {
+                        mobileMenu.classList.add('active');
+                        mobileMenu.style.display = 'block';
+                        mobileMenu.style.opacity = '1';
+                        mobileMenu.style.visibility = 'visible';
+                        menuIcon.setAttribute('data-feather', 'x');
+                    } else {
+                        mobileMenu.classList.remove('active');
+                        mobileMenu.style.display = 'none';
+                        mobileMenu.style.opacity = '0';
+                        mobileMenu.style.visibility = 'hidden';
+                        menuIcon.setAttribute('data-feather', 'menu');
+                    }
+                    
+                    feather.replace();
+                }
+                
+                mobileMenuButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+                
+                // Close menu when clicking on links
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (isMenuOpen) toggleMenu();
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                        if (isMenuOpen) toggleMenu();
+                    }
+                });
+                
+                // Close menu on window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && isMenuOpen) {
+                        toggleMenu();
+                    }
+                });
+            }
+        }
+        
+        // Form validation and enhancement
+        function initFormEnhancements() {
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                const inputs = form.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    // Add focus effects
+                    input.addEventListener('focus', () => {
+                        input.parentElement.classList.add('focused');
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        input.parentElement.classList.remove('focused');
+                    });
+                    
+                    // Add floating label effect
+                    input.addEventListener('input', () => {
+                        if (input.value) {
+                            input.classList.add('has-value');
+                        } else {
+                            input.classList.remove('has-value');
+                        }
+                    });
+                });
+                
+                // Form submission
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Add loading state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate form submission (replace with actual form handling)
+                    setTimeout(() => {
+                        submitBtn.textContent = 'Message Sent!';
+                        submitBtn.classList.add('bg-green-600');
+                        
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('bg-green-600');
+                            form.reset();
+                        }, 2000);
+                    }, 1500);
+                });
+            });
+        }
+        
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+            initMobileMenu();
+            initFormEnhancements();
+            
+            // Add scroll event listener for progress indicator
+            window.addEventListener('scroll', updateScrollProgress);
+            
+            // Add smooth scroll to all navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = link.getAttribute('href');
+                    smoothScrollTo(target);
+                });
+            });
+            
+            // Add loading animation to images
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('load', () => {
+                    img.classList.add('loaded');
+                });
+                
+                if (img.complete) {
+                    img.classList.add('loaded');
+                }
+            });
+        });
     </script>
 </body>
 </html>
